@@ -1,0 +1,175 @@
+.TH Nalo 1 "February 2024" "Version 3.1" "Nalo Manual"
+
+.SH NAME
+nalo \- assambler and uploader for the nibble cpu.
+
+.SH SYNOPSIS
+.B nalo
+[\fIfiles\fR]... [\fIuploadport\fR]
+.TP
+.B nalo
+\fI-h\fR\fI\fR
+
+.SH DESCRIPTION
+nalo (nibble assambly language operator) 
+is a assambler and uploader for the Nibble CPU it can compile a .nal file 
+the program can only be uploaded if its written in nal (Nibble assambly language)
+write nalo h if you wanna see all commands.
+.SH OPTIONS
+.TP
+\fB\-d, debug\fR
+Display the code in binary for debugging.
+.TP
+\fB\-h, help\fR
+Display all valid commands and numbers.
+.TP
+\fB\-f,forceupload\fR
+forceupload even if the program has error it gets uploaded
+.SH NAL 
+here is the complete explanation of each command:
+(it doesent mather if it's lowercase).
+.TP
+\fBMarker\fR
+Marker are points where you can jump to to write a marker write a word that is bigger than 3 letters to jump write the same name after a jump command.
+.TP
+\fBnumber 0xA\fR
+hexadecimal number can be written with 0x... befor the number
+.TP
+\fBnumber 0b0101\fR
+binary nummber can be written with 0b..... befor the number
+.TP
+\fBma:\fR
+"macro" everything between ma: and :em that is bigger than 3 letters is a macro.
+.TP
+\fB:me\fR
+"macro end" if you dont do that every thing in your code is a macro.
+.TP
+\fBST: OP:0000 1001\fR
+"Start" from here start the program between st: and :en you can writte commands.
+.TP
+\fB:EN OP:0000 1010\fR
+"End" here ends the program 
+.TP
+\fBBRA OP:0000 0001\fR
+"Branch" it jumps to the marker the command take 3 store addresses one for the command and the other to for the position of the marker.
+.TP
+\fBBEQ OP:0000 0010\fR
+"Branch if equal" if the sameflag is high it executes the BRA command. 
+.TP
+\fBBCY OP:0000 0011\fR
+"Branch if carry" if the carryflag is high it executes the BRA command.
+.TP
+\fBREA OP:0000 0100\fR
+"Read" it Read the contens of the pins and send it into the akkumulator to use it.
+.TP
+\fBRE0 OP:0000 0101\fR
+"Read at position 0" it executes BRA if the pin on the position 0 is HIGH.
+.TP
+\fBRE1 OP:0000 0110\fR
+"Read at position 1" it executes BRA if the pin on the position 1 is HIGH.
+.TP
+\fBRE2 OP:0000 0111\fR
+"Read at position 2" it executes BRA if the pin on the position 2 is HIGH.
+.TP
+\fBRE3 OP:0000 1000\fR
+"Read at position 3" it executes BRA if the pin on the position 3 is HIGH.
+
+.TP
+\fBNOP OP:0000 0000\fR
+"nope" does nothing.fBNOP OP:0000 0000\fR
+.TP
+\fBLDA OP:0001 xxxx\fR
+"load address" it loads the number stored in the address from the register in the akkumulator .
+.TP
+\fBLDN OP:0010 xxxx\fR
+"load number" it loads the number in the akkumulator.
+.TP
+\fBSTA OP:0011 xxxx\fR
+"Store at address" it store the number from the akkumulator in the given address
+.TP
+\fBADN OP:0100 xxxx\fR
+"Add number"it add the number to the number in the akkumulator and stores it in the akkumulator2.
+.TP
+\fBADA OP:0101 xxxx\fR
+"Add Address" it add the contens of the address with the number in the akkumulator and stores it in the akkumulator2
+.TP
+\fBSUN OP:0110 xxxx\fR
+"Subtract number" it subtract the number from the number in the akkumulator and store it in the akkumulator2
+.TP
+\fBSUA OP:0111 xxxx\fR
+"Subtract address" it subtract the contens of the address from the number in the akkumulator and store it in the akkumulator2
+.TP
+\fBMA1 OP:1000 xxxx\fR
+"multiplicat number part1" it multiplicate the contens of the address and because you get 8 bit instead of 4 bit it split it in two and this command store the first part in the akkumulator2.
+.TP
+\fBMA2 OP:1001 xxxx\fR
+"multiplicat number part2" it multiplicate the contens of the address and because you get 8 bit instead of 4 bit it split it in two and this command store the second part in the akkumulator2.
+.TP
+\fBMN1 OP:1010 xxxx\fR
+"multiplicat number part1" it multiplicate the number and because you get 8 bit instead of 4 bit it split it in two and this command store the first part in the akkumulator2.
+.TP
+\fBMN2 OP:1011 xxxx\fR
+"multiplicat number part2" it multiplicate the number and because you get 8 bit instead of 4 bit it split it in two and this command store the second part in the akkumulator2.
+.TP
+\fBCCF OP:1100 0000\fR
+"Clear carry flag" it reset the carry flag.
+.TP
+\fBASH OP:1101 0000\fR
+"Akkumulator shift" it store the contens of the akkumulator2 in the main akkumulator
+.TP
+\fBITS OP:1110 xxxx\fR
+"If its the same" it compare the number with the number in the akkumulator and if its the same its set the same flag high.
+.TP
+\fBCSF OP:1111 0000\fR
+"CLear same flag" it reset the same flag.
+.SH Error
+.TP
+ \fB001\fR
+is not a .nal file
+.TP
+ \fB002\fR
+marker is already been used.
+.TP
+ \fB003\fR
+ Number has between in certain scope.
+.TP
+ \fB004\fR
+ unknown command.
+.TP
+ \fB005\fR
+ port not be open.
+.TP
+ \fB006\fR
+ is not a number.
+
+.TP
+ \fB007\fR
+ macro does not exist.
+.TP
+ \fB008\fR
+ marker does not exist.
+.TP
+ \fB009\fR
+ :me is missing
+.TP
+ \fB010\fR
+ this macro is already been used
+.TP
+ \fB011\fR
+ dont repeat a branchcommand direclty
+.TP
+ \fB012\fR
+ Marker cant be between 320 and 352 im programcounter
+.TP
+ \fB013\fR
+ no branch command after a marker
+
+
+
+
+
+.SH AUTHOR
+Moritz Prünster from Knox Industrie
+
+.SH DISCLAIMER
+only use the Nibble CPU if you hate yourself and wanna shoot yourself in the foot.

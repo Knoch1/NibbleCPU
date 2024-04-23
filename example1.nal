@@ -1,0 +1,28 @@
+ma:
+	test 0b0101
+	output 0b0000
+:me
+
+st:
+Main
+	nop
+	lda	test
+	adn	1
+	ash	
+	sta	test
+	its	10
+	beq	moin
+	nop
+	bra 	Main
+moin	
+	nop
+	lda 	output
+	adn 	1
+	ash
+	sta	Output
+	ldn	0
+	sta	test
+	bra	Main
+
+
+:en
